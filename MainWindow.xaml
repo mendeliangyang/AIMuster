@@ -6,7 +6,7 @@
         xmlns:i ="http://schemas.microsoft.com/xaml/behaviors"
          xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        Title="{DynamicResource WindowTitle}" Height="450" Width="800" >
+        Title="{DynamicResource Title_MainWindow}" Height="450" Width="800" >
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
@@ -19,15 +19,15 @@
             <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
-            <MenuItem Header="帮助">
-                <MenuItem Header="设置" >
+            <MenuItem Header="{DynamicResource Help_MainWindow}">
+                <MenuItem Header="{DynamicResource Set_MainWindow}" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:InvokeCommandAction Command="{Binding SetCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </MenuItem>
-                <MenuItem Header="退出" />
+                <MenuItem Header="{DynamicResource Exit_MainWindow}" />
             </MenuItem>
         </Menu>
 
