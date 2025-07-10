@@ -58,23 +58,24 @@ namespace AIMuster.ViewModels
         private void Set()
         {
             var setWindow = WindowFactory.ShowWindow<SetWindow>(ShowMode.ShowDialog);
+            Reload();
         }
 
 
         [RelayCommand]
         private void Reload()
         {
-            aiModelConfigs.Clear();
+            AiModelConfigs.Clear();
             var appConfig = ConfigManager.LoadAppConfig();
-            rowCount = appConfig.RowCount;
-            columnCount = appConfig.ColumnCount;
+            RowCount = appConfig.RowCount;
+            ColumnCount = appConfig.ColumnCount;
             var configs = ConfigManager.LoadAiModelConfig();
             var viewConfigs = ConfigManager.LoadViewAiModelConfig();
-            var cellCount = rowCount * columnCount;
+            var cellCount = RowCount * ColumnCount;
 
             for (int i = 0; i < cellCount; i++)
             {
-                aiModelConfigs.Add(new AiModelConfig());
+                AiModelConfigs.Add(new AiModelConfig());
             }
         }
 
