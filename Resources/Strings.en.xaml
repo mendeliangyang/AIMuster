@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="WindowTitle">AIMuster</sys:String>
+
+    <sys:String x:Key="Title_SetWindow">Set</sys:String>
+    <sys:String x:Key="RowTb_SetWindow">Row</sys:String>
+    <sys:String x:Key="ColumnTb_SetWindow">Column</sys:String>
+    <sys:String x:Key="Language_SetWindow">Language</sys:String>
+</ResourceDictionary>
