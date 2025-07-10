@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i ="http://schemas.microsoft.com/xaml/behaviors"
+         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="{DynamicResource WindowTitle}" Height="450" Width="800" >
     <i:Interaction.Triggers>
@@ -13,10 +14,11 @@
     </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="100"></RowDefinition>
         </Grid.RowDefinitions>
-        <Menu>
+        <Menu Grid.Row="0">
             <MenuItem Header="帮助">
                 <MenuItem Header="设置" >
                     <i:Interaction.Triggers>
@@ -30,10 +32,27 @@
         </Menu>
 
 
-        <Grid Grid.Row="0">
-            
-        </Grid>
         <Grid Grid.Row="1">
+            <ScrollViewer>
+                <ItemsControl ItemsSource="{Binding AiModelConfigs}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="{Binding RowCount}" Columns="{Binding ColumnCount}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="2">
+                                <!--<wv2:WebView2 Source="{Binding Url}" Margin="2" />-->
+                                <wv2:WebView2 Source="https://www.baidu.com" Margin="2" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="0"></ColumnDefinition>

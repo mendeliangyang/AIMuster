@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AIMuster.Config;
 using AIMuster.Models;
 using AIMuster.Services;
 using AIMuster.UI;
@@ -26,7 +28,7 @@ namespace AIMuster.ViewModels
         /// 模型列表
         /// </summary>
         [ObservableProperty]
-        private List<AiModelConfig> aiModelConfigs = new List<AiModelConfig>();
+        private ObservableCollection<AiModelConfig> aiModelConfigs = new ObservableCollection<AiModelConfig>();
 
         /// <summary>
         /// 行
@@ -38,7 +40,7 @@ namespace AIMuster.ViewModels
         /// 列
         /// </summary>
         [ObservableProperty]
-        private int cloumnCount;
+        private int columnCount;
 
         [ObservableProperty]
         private string cueWord = "AIMuster - ";
@@ -47,7 +49,8 @@ namespace AIMuster.ViewModels
         [RelayCommand]
         private void Loaded() 
         {
-            _messageService.ShowMessage("loaded");
+            //_messageService.ShowMessage("loaded");
+            Reload();
         }
 
 
@@ -55,7 +58,24 @@ namespace AIMuster.ViewModels
         private void Set()
         {
             var setWindow = WindowFactory.ShowWindow<SetWindow>(ShowMode.ShowDialog);
+        }
 
+
+        [RelayCommand]
+        private void Reload()
+        {
+            aiModelConfigs.Clear();
+            var appConfig = ConfigManager.LoadAppConfig();
+            rowCount = appConfig.RowCount;
+            columnCount = appConfig.ColumnCount;
+            var configs = ConfigManager.LoadAiModelConfig();
+            var viewConfigs = ConfigManager.LoadViewAiModelConfig();
+            var cellCount = rowCount * columnCount;
+
+            for (int i = 0; i < cellCount; i++)
+            {
+                aiModelConfigs.Add(new AiModelConfig());
+            }
         }
 
         #endregion

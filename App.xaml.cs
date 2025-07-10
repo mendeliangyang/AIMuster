@@ -30,7 +30,7 @@ namespace AIMuster
 
             var asm = Assembly.GetExecutingAssembly();
 
-            var config = ConfigManager.Load();
+            var config = ConfigManager.LoadAppConfig();
 
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>

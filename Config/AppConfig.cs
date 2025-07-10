@@ -15,14 +15,15 @@ namespace AIMuster.Config
         public string Theme { get; set; } = "Light";
         public int WindowWidth { get; set; } = 800;
         public int WindowHeight { get; set; } = 600;
-        public int RowCount { get; set; } = 800;
-        public int ColumnCount { get; set; } = 600;
+        public int RowCount { get; set; } = 1;
+        public int ColumnCount { get; set; } = 1;
     }
 
     public static class ConfigManager
     {
         private static readonly string ConfigFilePath = "config.json";
         private static readonly string AiModelConfigFilePath = "AiModelConfig.json";
+        private static readonly string ViewAiModelConfigFilePath = "ViewAiModelConfig.json";
 
 
         private static List<AiModelConfig> aiModelConfigs = new List<AiModelConfig>()
@@ -73,7 +74,7 @@ namespace AIMuster.Config
         };
 
 
-        public static AppConfig Load()
+        public static AppConfig LoadAppConfig()
         {
             if (File.Exists(ConfigFilePath))
             {
@@ -100,6 +101,31 @@ namespace AIMuster.Config
                 return JsonSerializer.Deserialize<List<AiModelConfig>>(json) ?? aiModelConfigs;
             }
             return aiModelConfigs;
+        }
+
+
+        public static void SaveAiModelConfig(List<AiModelConfig> configs)
+        {
+            var json = JsonSerializer.Serialize(configs, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(AiModelConfigFilePath, json);
+        }
+
+
+        public static List<AiModelConfig> LoadViewAiModelConfig()
+        {
+            if (File.Exists(ViewAiModelConfigFilePath))
+            {
+                var json = File.ReadAllText(ViewAiModelConfigFilePath);
+                return JsonSerializer.Deserialize<List<AiModelConfig>>(json) ?? aiModelConfigs;
+            }
+            return aiModelConfigs;
+        }
+
+
+        public static void SaveViewAiModelConfig(List<AiModelConfig> configs)
+        {
+            var json = JsonSerializer.Serialize(configs, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(ViewAiModelConfigFilePath, json);
         }
 
     }
