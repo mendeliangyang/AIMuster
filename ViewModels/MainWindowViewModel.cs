@@ -116,7 +116,7 @@ namespace AIMuster.ViewModels
         private void KeyEnter()
         {
             //Debug.WriteLine($"按下了回车，内容是：{CueWord}");
-            //给webview2 填充内容
+
             if (!string.IsNullOrEmpty(CueWord))
             {
                 foreach (var model in AiModelConfigs)
@@ -126,6 +126,7 @@ namespace AIMuster.ViewModels
                         continue;
                     }
                     var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
+                    //通过 webview2 运行js
                 }
             }
         }
