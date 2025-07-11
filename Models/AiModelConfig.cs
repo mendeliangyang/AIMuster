@@ -30,7 +30,7 @@ namespace AIMuster.Models
         [ObservableProperty] 
         private string modelIconUrl ;
         [ObservableProperty] 
-        private bool isEnabled  = true;
+        private bool isEnabled  = false;
         [ObservableProperty] 
         private bool isDefault  = false;
         [ObservableProperty] 

@@ -17,6 +17,7 @@ namespace AIMuster
     {
 
         public static IHost AppHost { get; private set; }
+        public static AppConfig AppConfig { get; private set; }
 
         public App()
         {
@@ -30,7 +31,7 @@ namespace AIMuster
 
             var asm = Assembly.GetExecutingAssembly();
 
-            var config = ConfigManager.LoadAppConfig();
+            AppConfig = ConfigManager.LoadAppConfig();
 
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
@@ -39,7 +40,7 @@ namespace AIMuster
                     {
                         //立即保存回去一次（可选）
                         //ConfigManager.Save(config);
-                        return config;
+                        return AppConfig;
                     });
                     services.AddServicesByInterface(asm, "AIMuster.Services");
                     services.AddViewModels(asm, "AIMuster.ViewModels");
@@ -47,7 +48,7 @@ namespace AIMuster
                 .Build();
 
 
-            LanguageManager.ChangeLanguage(config.Language);
+            //LanguageManager.ChangeLanguage(config.Language);
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -59,6 +60,8 @@ namespace AIMuster
                 DataContext = AppHost.Services.GetRequiredService<MainWindowViewModel>()
             };
             mainWindow.Show();
+
+            LanguageManager.ChangeLanguage(AppConfig.Language);
 
             base.OnStartup(e);
         }

@@ -32,6 +32,10 @@ namespace AIMuster.ViewModels
         private string language;
 
 
+        [ObservableProperty]
+        private bool ifChanged=false;
+
+
         [RelayCommand]
         private void LanguageChanged(string language)
         {
@@ -40,11 +44,13 @@ namespace AIMuster.ViewModels
                 LanguageManager.ChangeLanguage(language);
             }
             _appConfig.Language = language;
+            IfChanged = true;
             ConfigManager.Save(_appConfig);
         }
         [RelayCommand]
         private void SaveConfig()
         {
+            IfChanged = true;
             _appConfig.RowCount = RowCount;
             _appConfig.ColumnCount = ColumnCount;
             ConfigManager.Save(_appConfig);

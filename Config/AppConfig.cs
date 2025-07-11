@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using AIMuster.Models;
 
 namespace AIMuster.Config
@@ -21,6 +18,8 @@ namespace AIMuster.Config
 
     public static class ConfigManager
     {
+        public const string PromptCodeWeb = "$prompt";
+
         private static readonly string ConfigFilePath = "config.json";
         private static readonly string AiModelConfigFilePath = "AiModelConfig.json";
         private static readonly string ViewAiModelConfigFilePath = "ViewAiModelConfig.json";
@@ -40,7 +39,25 @@ namespace AIMuster.Config
                 IsEnabled = true,
                 IsDefault = true,
                 IsCustomModel = false,
-                ObtainElementJs = "chat-input"
+                ObtainElementJs = $@"(() => {{
+                        try {{
+                                const el = document.getElementById('chat-input');
+                                if (!el) return 'element not found';
+
+                                const nativeSetter = Object.getOwnPropertyDescriptor(
+                                    el.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype
+                                                              : HTMLInputElement.prototype,
+                                    'value').set;
+                                nativeSetter.call(el, '$prompt');
+
+                                el.dispatchEvent(new Event('input',  {{ bubbles:true }}));
+                                el.dispatchEvent(new Event('change', {{ bubbles:true }}));
+
+                                return 'success';
+                            }} catch(e) {{
+                                return 'error: ' + e.message;
+                            }}
+                        }})()"
             },
             new AiModelConfig
             {
@@ -54,7 +71,20 @@ namespace AIMuster.Config
                 IsEnabled = true,
                 IsDefault = true,
                 IsCustomModel = false,
-                ObtainElementJs = "prompt-textarea"
+                ObtainElementJs = $@"
+                    (async () => {{
+                        try {{
+                            const div = document.getElementById('prompt-textarea');
+                            if (div) {{
+                                const paragraphs = div.getElementsByTagName('p');
+                                for (let i = 0; i < paragraphs.length; i++) {{
+                                    paragraphs[i].innerText = '$prompt'; 
+                                }}
+                            }}
+                        }} catch (error) {{
+                            console.error('Error executing script:', error);
+                        }}
+                    }})();"
             }
             ,
             new AiModelConfig
@@ -113,12 +143,17 @@ namespace AIMuster.Config
 
         public static List<AiModelConfig> LoadViewAiModelConfig()
         {
+            List<AiModelConfig> viewAiModelConfigs = null;
             if (File.Exists(ViewAiModelConfigFilePath))
             {
                 var json = File.ReadAllText(ViewAiModelConfigFilePath);
-                return JsonSerializer.Deserialize<List<AiModelConfig>>(json) ?? aiModelConfigs;
+                viewAiModelConfigs = JsonSerializer.Deserialize<List<AiModelConfig>>(json);
             }
-            return aiModelConfigs;
+            if (viewAiModelConfigs==null)
+            {
+                viewAiModelConfigs = aiModelConfigs;
+            }
+            return viewAiModelConfigs.OrderBy(a => a.RowIndex).ThenBy(a => a.ColumnIndex).ToList();
         }
 
 

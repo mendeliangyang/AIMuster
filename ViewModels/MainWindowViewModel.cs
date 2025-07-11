@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using AIMuster.Config;
 using AIMuster.Models;
 using AIMuster.Services;
@@ -17,9 +19,14 @@ namespace AIMuster.ViewModels
     public partial class MainWindowViewModel :ObservableObject
     {
         IMessageService _messageService;
+
+        public IRelayCommand<KeyEventArgs> EnterCommand { get; }
+
         public MainWindowViewModel( IMessageService messageService) 
         {
             _messageService = messageService;
+
+            EnterCommand = new RelayCommand<KeyEventArgs>(OnEnter);
         }
 
         #region Data
@@ -44,6 +51,7 @@ namespace AIMuster.ViewModels
 
         [ObservableProperty]
         private string cueWord = "AIMuster - ";
+
         #endregion
         #region Command
         [RelayCommand]
@@ -58,24 +66,75 @@ namespace AIMuster.ViewModels
         private void Set()
         {
             var setWindow = WindowFactory.ShowWindow<SetWindow>(ShowMode.ShowDialog);
-            Reload();
+            var swVm = setWindow.DataContext as SetWindowViewModel;
+            if (swVm?.IfChanged==true)
+            {
+                Reload();
+            }
         }
 
 
         [RelayCommand]
         private void Reload()
         {
-            AiModelConfigs.Clear();
             var appConfig = ConfigManager.LoadAppConfig();
             RowCount = appConfig.RowCount;
             ColumnCount = appConfig.ColumnCount;
             var configs = ConfigManager.LoadAiModelConfig();
             var viewConfigs = ConfigManager.LoadViewAiModelConfig();
             var cellCount = RowCount * ColumnCount;
-
-            for (int i = 0; i < cellCount; i++)
+            AiModelConfigs.Clear();
+            int cellIndex = -1;
+            for (int i = 0; i < RowCount; i++)
             {
-                AiModelConfigs.Add(new AiModelConfig());
+                for (int j = 0; j < ColumnCount; j++)
+                {
+                    cellIndex ++;
+                    var viewModel = viewConfigs.FirstOrDefault(a => a.RowIndex == i && a.ColumnIndex == j);
+                    if (viewModel != null) 
+                    {
+                        AiModelConfigs.Add(viewModel);
+                        continue;
+                    }
+                    if (viewConfigs.Count > cellIndex)
+                    {
+                        viewModel = viewConfigs.FirstOrDefault(a => !AiModelConfigs.Any(b => b.ModelId == a.ModelId));
+                        if (viewModel!=null)
+                        {
+                            AiModelConfigs.Add(viewModel);
+                            continue;
+                        }
+                    }
+                    AiModelConfigs.Add(new AiModelConfig());
+                }
+            }
+
+        }
+
+
+        [RelayCommand]
+        private void KeyEnter()
+        {
+            //Debug.WriteLine($"按下了回车，内容是：{CueWord}");
+            //给webview2 填充内容
+            if (!string.IsNullOrEmpty(CueWord))
+            {
+                foreach (var model in AiModelConfigs)
+                {
+                    if (!model.IsEnabled)
+                    {
+                        continue;
+                    }
+                    var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
+                }
+            }
+        }
+
+        private void OnEnter(KeyEventArgs e)
+        {
+            if (e?.Key == Key.Enter)
+            {
+                KeyEnter();
             }
         }
 
