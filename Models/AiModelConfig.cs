@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace AIMuster.Models
 {
@@ -45,8 +46,15 @@ namespace AIMuster.Models
         /// <summary>
         /// 填充元素的JavaScript代码
         /// </summary>
-        [ObservableProperty]
-        private string obtainElementJs;
+        public string ObtainElementJs { get; set; }
+
+
+        /// <summary>
+        /// 运行发送按钮js
+        /// </summary>
+        public string SendElementJs { get; set; }
+
+        public WebView2 TargetWebView { get; set;}
 
     }
 }

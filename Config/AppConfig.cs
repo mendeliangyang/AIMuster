@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Windows;
 using AIMuster.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AIMuster.Config
 {
@@ -57,7 +60,33 @@ namespace AIMuster.Config
                             }} catch(e) {{
                                 return 'error: ' + e.message;
                             }}
-                        }})()"
+                        }})()",
+                SendElementJs= @"
+                                (function() {
+                                    const container = document.querySelector('._6f28693');
+                                    if (!container) return '未找到 ._6f28693 容器';
+
+                                    const allIcons = container.querySelectorAll('.ds-icon');
+                                    let clickedCount = 0;
+
+                                    allIcons.forEach(icon => {
+                                        const style = window.getComputedStyle(icon);
+                                        if (
+                                            style.fontSize === '16px' &&
+                                            style.width === '16px' &&
+                                            style.height === '16px'
+                                        ) {
+                                            const event = new MouseEvent('click', {
+                                                bubbles: true,
+                                                cancelable: true,
+                                                view: window
+                                            });
+                                            icon.dispatchEvent(event);
+                                            clickedCount++;
+                                        }
+                                    });
+                                    return clickedCount;
+                                })();"
             },
             new AiModelConfig
             {
@@ -84,7 +113,19 @@ namespace AIMuster.Config
                         }} catch (error) {{
                             console.error('Error executing script:', error);
                         }}
-                    }})();"
+                    }})();",
+                SendElementJs=@"const button = document.getElementById('composer-submit-button');
+                                if (button) {
+                                    const event = new MouseEvent('click', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        view: window
+                                    });
+                                    button.dispatchEvent(event);
+                                    '事件已触发';
+                                } else {
+                                    '错误：按钮未找到';
+                                }"
             }
             ,
             new AiModelConfig
@@ -100,6 +141,21 @@ namespace AIMuster.Config
                 IsDefault = true,
                 IsCustomModel = false,
                 ObtainElementJs = "(()=>{\r\n    var element = document.querySelector('textarea[placeholder=\"遇事不决问通义\"]');\r\nif(!element)\r\n{\r\n    document.querySelector('textarea.ant-input.textarea--FEdqShqI');\r\n}\r\n     if(element){ const nativeSetter = Object.getOwnPropertyDescriptor(\r\n      element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype\r\n                                : HTMLInputElement.prototype,\r\n      'value').set;\r\n  nativeSetter.call(element, '$prompt');\r\n\r\n  element.dispatchEvent(new Event('input',  { bubbles:true }));\r\n  element.dispatchEvent(new Event('change', { bubbles:true }));}\r\n})()"
+                ,
+                SendElementJs=@"
+                                (function() {
+                                    const el = document.querySelector('.operateBtn--qMhYIdIu');
+                                    if (!el) return '未找到目标元素';
+
+                                    const event = new MouseEvent('click', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        view: window
+                                    });
+
+                                    el.dispatchEvent(event);
+                                    return '点击事件已触发';
+                                })();"
             }
         };
 

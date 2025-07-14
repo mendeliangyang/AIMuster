@@ -113,7 +113,7 @@ namespace AIMuster.ViewModels
 
 
         [RelayCommand]
-        private void KeyEnter()
+        private async void KeyEnter()
         {
             //Debug.WriteLine($"按下了回车，内容是：{CueWord}");
 
@@ -121,12 +121,15 @@ namespace AIMuster.ViewModels
             {
                 foreach (var model in AiModelConfigs)
                 {
-                    if (!model.IsEnabled)
+                    if (!model.IsEnabled&&model.TargetWebView==null)
                     {
                         continue;
                     }
                     var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
-                    //通过 webview2 运行js
+                    //通过 webview2 运行js 填充
+                    await model.TargetWebView?.ExecuteScriptAsync(runJs);
+
+                    model.TargetWebView?.ExecuteScriptAsync(model.SendElementJs);
                 }
             }
         }

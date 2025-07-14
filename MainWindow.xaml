@@ -48,7 +48,7 @@
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="2">
                                 <Grid>
                                     <!-- 默认：显示 WebView2 -->
-                                    <wv2:WebView2 x:Name="WebViewer"  Source="{Binding ModelUrl}"  Margin="2" Visibility="{Binding IsEnabled ,Converter={StaticResource BoolToVisibility}}" />
+                                    <wv2:WebView2 x:Name="WebViewer"  Source="{Binding ModelUrl}"  Margin="2" Visibility="{Binding IsEnabled ,Converter={StaticResource BoolToVisibility}}" Loaded="WebViewer_Loaded"/>
                                     <!-- 替代：显示下拉框 -->
                                     <ComboBox x:Name="ModelSelector"   ItemsSource="{Binding AvailableModels}"  SelectedItem="{Binding SelectedModel, Mode=TwoWay}"   Margin="2"  Visibility="{Binding IsEnabled ,Converter={StaticResource BoolToVisibility},ConverterParameter=Invert}" />
                                 </Grid>
