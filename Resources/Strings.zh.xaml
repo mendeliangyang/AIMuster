@@ -9,4 +9,7 @@
     <sys:String x:Key="RowTb_SetWindow">行</sys:String>
     <sys:String x:Key="ColumnTb_SetWindow">列</sys:String>
     <sys:String x:Key="Language_SetWindow">语言</sys:String>
+    <sys:String x:Key="Theme_SetWindow">主题</sys:String>
+    <sys:String x:Key="Dark_SetWindow">暗色</sys:String>
+    <sys:String x:Key="Light_SetWindow">亮色</sys:String>
 </ResourceDictionary>

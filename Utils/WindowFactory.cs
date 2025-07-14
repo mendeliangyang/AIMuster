@@ -114,5 +114,26 @@ namespace AIMuster.Utils
             Application.Current.Resources.MergedDictionaries.Add(dict);
         }
     }
+    public static class ThemeManager
+    {
+        public static void SwitchTheme(string theme)
+        {
+            string themePath = $"Resources/Themes/{theme}Theme.xaml";
+
+            var newDict = new ResourceDictionary
+            {
+                Source = new Uri(themePath, UriKind.Relative)
+            };
+
+            // 移除旧主题
+            var appResources = Application.Current.Resources.MergedDictionaries;
+            var existingTheme = appResources.FirstOrDefault(d => d.Source?.OriginalString.Contains("Theme") == true);
+            if (existingTheme != null)
+                appResources.Remove(existingTheme);
+
+            // 加载新主题
+            appResources.Add(newDict);
+        }
+    }
 
 }

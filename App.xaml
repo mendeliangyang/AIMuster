@@ -10,6 +10,8 @@
             <lc:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Strings.zh.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Controls.xaml" />
+                <ResourceDictionary Source="Resources/Themes/LightTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

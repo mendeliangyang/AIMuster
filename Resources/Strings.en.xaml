@@ -10,4 +10,7 @@
     <sys:String x:Key="RowTb_SetWindow">Row</sys:String>
     <sys:String x:Key="ColumnTb_SetWindow">Column</sys:String>
     <sys:String x:Key="Language_SetWindow">Language</sys:String>
+    <sys:String x:Key="Theme_SetWindow">Theme</sys:String>
+    <sys:String x:Key="Dark_SetWindow">Dark</sys:String>
+    <sys:String x:Key="Light_SetWindow">Light</sys:String>
 </ResourceDictionary>

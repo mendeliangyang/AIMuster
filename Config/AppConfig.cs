@@ -4,15 +4,23 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Media.Media3D;
 using AIMuster.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace AIMuster.Config
 {
+
+    public enum Theme
+    {
+        Light,
+        Dark
+    }
+
     public class AppConfig
     {
         public string Language { get; set; } = "zh";
-        public string Theme { get; set; } = "Light";
+        public Theme Theme { get; set; } = Theme.Light;
         public int WindowWidth { get; set; } = 800;
         public int WindowHeight { get; set; } = 600;
         public int RowCount { get; set; } = 1;
