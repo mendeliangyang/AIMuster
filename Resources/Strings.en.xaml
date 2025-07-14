@@ -1,6 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+
+    <sys:String x:Key="Confirm_General">Confirm</sys:String>
+    <sys:String x:Key="Cancel_General">Cancel</sys:String>
+
     <sys:String x:Key="WindowTitle">AIMuster</sys:String>
     <sys:String x:Key="Help_MainWindow">Help</sys:String>
     <sys:String x:Key="Set_MainWindow">Set</sys:String>

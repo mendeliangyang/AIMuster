@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Web.WebView2.Wpf;
@@ -53,7 +54,10 @@ namespace AIMuster.Models
         /// 运行发送按钮js
         /// </summary>
         public string SendElementJs { get; set; }
-
+        /// <summary>
+        /// 目标WebView 控件
+        /// </summary>
+        [JsonIgnore]
         public WebView2 TargetWebView { get; set;}
 
     }

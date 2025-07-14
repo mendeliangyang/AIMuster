@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AIMuster.Message;
+using AIMuster.ViewModels;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace AIMuster.UI
 {
@@ -22,6 +25,12 @@ namespace AIMuster.UI
         public SetWindow()
         {
             InitializeComponent();
+
+            WeakReferenceMessenger.Default.Register<SetWindow, CloseWindowMessage>(this, (recipient, message) =>
+            {
+                recipient.Close();
+                System.Diagnostics.Debug.WriteLine($"窗口已关闭 (通过指定发送者过滤)。");
+            });
         }
     }
 }

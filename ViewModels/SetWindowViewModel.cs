@@ -4,32 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AIMuster.Config;
+using AIMuster.Message;
 using AIMuster.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace AIMuster.ViewModels
 {
     partial class SetWindowViewModel :ObservableObject
     {
 
-        AppConfig _appConfig;
-        public SetWindowViewModel(AppConfig appConfig)
+        public SetWindowViewModel(AppConfig config)
         {
-            _appConfig = appConfig;
-            rowCount = _appConfig.RowCount;
-            columnCount = _appConfig.ColumnCount;
-            language = _appConfig.Language;
+            appConfig = config;
         }
 
         [ObservableProperty]
-        private int rowCount =1;
-
-        [ObservableProperty]
-        private int columnCount = 1;
-
-        [ObservableProperty]
-        private string language;
+        AppConfig appConfig;
 
 
         [ObservableProperty]
@@ -43,17 +35,25 @@ namespace AIMuster.ViewModels
             {
                 LanguageManager.ChangeLanguage(language);
             }
-            _appConfig.Language = language;
             IfChanged = true;
-            ConfigManager.Save(_appConfig);
+            ConfigManager.Save(AppConfig);
         }
         [RelayCommand]
         private void SaveConfig()
         {
             IfChanged = true;
-            _appConfig.RowCount = RowCount;
-            _appConfig.ColumnCount = ColumnCount;
-            ConfigManager.Save(_appConfig);
+            ConfigManager.Save(AppConfig);
         }
+
+        [RelayCommand]
+        private void SaveConfigAndClose()
+        {
+            SaveConfig();
+
+            // 发送一个普通的关闭消息
+            WeakReferenceMessenger.Default.Send(new CloseWindowMessage(), this);
+            WeakReferenceMessenger.Default.Send(SetWindowViewModel.CloseWindowMessage, this);
+        }
+        
     }
 }

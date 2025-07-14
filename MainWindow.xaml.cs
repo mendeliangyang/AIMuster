@@ -29,7 +29,6 @@ namespace AIMuster
             {
                 model.TargetWebView = webView;
             }
-
         }
     }
 }

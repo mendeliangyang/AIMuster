@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows;
+using AIMuster.Config;
 
 namespace AIMuster.Converter
 {
@@ -31,4 +32,38 @@ namespace AIMuster.Converter
             => throw new NotSupportedException();
     }
 
+    public class ThemeToBoolConverter: IValueConverter
+    {
+        /// <summary>
+        /// 正向：true → Dark，false → Light
+        /// 反向：true → Light，false → Dark
+        /// 参数：如果是 "Invert" 或 "False" → 反向模式
+        /// </summary>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            try
+            {
+                var theme = (Theme)value;
+                return theme.ToString().ToUpper() == parameter?.ToString()?.ToUpper();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var isChecked = (bool)value;
+            if (Theme.Dark.ToString().ToUpper()== parameter?.ToString()?.ToUpper()&&isChecked)
+            {
+                return Theme.Dark;
+            }
+            if (Theme.Light.ToString().ToUpper() == parameter?.ToString()?.ToUpper() && isChecked)
+            {
+                return Theme.Light;
+            }
+            return Theme.Light;
+        }
+    }
 }

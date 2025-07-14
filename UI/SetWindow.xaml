@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource RowTb_SetWindow}"></TextBlock >
-        <TextBox Grid.Row="0" Grid.Column="1" behaviors:NumberTextBoxInputBehavior.IsNumeric="True"  Text="{Binding RowCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+        <TextBox Grid.Row="0" Grid.Column="1" behaviors:NumberTextBoxInputBehavior.IsNumeric="True"  Text="{Binding AppConfig.RowCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">
                     <i:InvokeCommandAction Command="{Binding SaveConfigCommand}"></i:InvokeCommandAction>
@@ -29,7 +29,7 @@
             </i:Interaction.Triggers>
         </TextBox>
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource ColumnTb_SetWindow}"></TextBlock>
-        <TextBox Grid.Row="1" Grid.Column="1" behaviors:NumberTextBoxInputBehavior.IsNumeric="True" Text="{Binding ColumnCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+        <TextBox Grid.Row="1" Grid.Column="1" behaviors:NumberTextBoxInputBehavior.IsNumeric="True" Text="{Binding AppConfig.ColumnCount, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="TextChanged">
                     <i:InvokeCommandAction Command="{Binding SaveConfigCommand}"></i:InvokeCommandAction>
@@ -39,7 +39,7 @@
         <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource Language_SetWindow}"></TextBlock>
         <ComboBox Grid.Row="2" Grid.Column="1" 
                   SelectedValuePath="Tag"
-                  SelectedValue="{Binding Language,Mode=TwoWay}">
+                  SelectedValue="{Binding AppConfig.Language,Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged">
                     <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedValue,RelativeSource={RelativeSource AncestorType=ComboBox}}" />
@@ -50,10 +50,39 @@
         </ComboBox>
         <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource Theme_SetWindow}"></TextBlock>
         <StackPanel Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Left" Orientation="Horizontal">
-            <RadioButton  
-             VerticalAlignment="Center" Content="{DynamicResource Light_SetWindow}"
-></RadioButton>
-            <RadioButton VerticalAlignment="Center" Content="{DynamicResource Dark_SetWindow}" />
+            <RadioButton GroupName="theme" VerticalAlignment="Center" VerticalContentAlignment="Center"
+ Content="{DynamicResource Light_SetWindow}"  IsChecked="{Binding AppConfig.Theme,Converter={StaticResource ThemeToBool},ConverterParameter=Light}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding SaveConfigCommand}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
+            
+            <RadioButton GroupName="theme" VerticalAlignment="Center" VerticalContentAlignment="Center"
+ Content="{DynamicResource Dark_SetWindow}" IsChecked="{Binding AppConfig.Theme,Converter={StaticResource ThemeToBool},ConverterParameter=Dark}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Checked">
+                        <i:InvokeCommandAction Command="{Binding SaveConfigCommand}"></i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </RadioButton>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" >
+            <Button Content="{DynamicResource Confirm_General}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedValue,RelativeSource={RelativeSource AncestorType=ComboBox}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <Button Content="{DynamicResource Cancel_General}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedValue,RelativeSource={RelativeSource AncestorType=ComboBox}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>
