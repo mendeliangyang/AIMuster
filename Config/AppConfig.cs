@@ -134,8 +134,54 @@ namespace AIMuster.Config
                                 } else {
                                     '错误：按钮未找到';
                                 }"
-            }
-            ,
+            },
+            new AiModelConfig
+            {
+                ModelName = "Google",
+                ModelId = "Gemini",
+                ModelType = "Gemini",
+                ModelVersion = "v1",
+                ModelDescription = "Google Gemini",
+                ModelUrl = "https://gemini.google.com/app",
+                ModelIconUrl = "https://example.com/icon.png",
+                IsEnabled = true,
+                IsDefault = true,
+                IsCustomModel = false,
+                ObtainElementJs = @"
+                                (function() {
+                                    const div = document.querySelector('.ql-editor.textarea.new-input-ui');
+                                    if (!div) return '找不到目标元素';
+
+                                    const p = div.querySelector('p');
+                                    if (!p) {
+                                        const newP = document.createElement('p');
+                                        newP.innerText = '$prompt';
+                                        div.appendChild(newP);
+                                    } else {
+                                        p.innerText = '$prompt';
+                                    }
+
+                                    return '内容已更新';
+                                })();"
+                ,
+                SendElementJs=@"
+                                (function() {
+                                    const button = Array.from(document.querySelectorAll('button')).find(btn =>
+                                        btn.classList.contains('send-button') &&
+                                        btn.classList.contains('mat-mdc-icon-button') &&
+                                        btn.getAttribute('aria-label') === '发送'
+                                    );
+                                    if (!button) return '未找到发送按钮';
+
+                                    const event = new MouseEvent('click', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        view: window
+                                    });
+                                    button.dispatchEvent(event);
+                                    return '已触发点击';
+                                })();"
+            },
             new AiModelConfig
             {
                 ModelName = "通义",

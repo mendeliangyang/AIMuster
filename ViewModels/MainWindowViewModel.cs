@@ -123,9 +123,9 @@ namespace AIMuster.ViewModels
                     var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
                     //通过 webview2 运行js 填充
                     await model.TargetWebView?.ExecuteScriptAsync(runJs);
-                    CueWord = "" ;
                     model.TargetWebView?.ExecuteScriptAsync(model.SendElementJs);
                 }
+                CueWord = "";
             }
         }
 
