@@ -14,11 +14,13 @@ namespace AIMuster.ViewModels
     public partial class MainWindowViewModel :ObservableObject
     {
         IMessageService _messageService;
+        IAppService _appService;
 
         public IRelayCommand<KeyEventArgs> EnterCommand { get; }
 
-        public MainWindowViewModel( IMessageService messageService) 
+        public MainWindowViewModel( IMessageService messageService,IAppService appService) 
         {
+            _appService = appService;
             _messageService = messageService;
 
             EnterCommand = new RelayCommand<KeyEventArgs>(OnEnter);
@@ -127,6 +129,12 @@ namespace AIMuster.ViewModels
                 }
                 CueWord = "";
             }
+        }
+
+        [RelayCommand]
+        private void ExitApp()
+        {
+            _appService.Shutdown();
         }
 
         private void OnEnter(KeyEventArgs e)
