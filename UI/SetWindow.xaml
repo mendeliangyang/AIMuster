@@ -69,20 +69,20 @@
             </RadioButton>
         </StackPanel>
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal" >
-            <Button Content="{DynamicResource Confirm_General}" >
+            <Button Content="{DynamicResource Close_General}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+            <!--<Button Content="{DynamicResource Cancel_General}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
                         <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedValue,RelativeSource={RelativeSource AncestorType=ComboBox}}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </Button>
-            <Button Content="{DynamicResource Cancel_General}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction Command="{Binding LanguageChangedCommand}" CommandParameter="{Binding SelectedValue,RelativeSource={RelativeSource AncestorType=ComboBox}}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+            </Button>-->
         </StackPanel>
     </Grid>
 </Window>

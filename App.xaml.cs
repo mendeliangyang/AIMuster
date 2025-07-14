@@ -62,6 +62,7 @@ namespace AIMuster
             mainWindow.Show();
 
             LanguageManager.ChangeLanguage(AppConfig.Language);
+            ThemeManager.SwitchTheme(AppConfig.Theme.ToString());
 
             base.OnStartup(e);
         }

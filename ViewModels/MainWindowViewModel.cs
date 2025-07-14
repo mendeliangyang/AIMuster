@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using AIMuster.Config;
 using AIMuster.Models;
@@ -113,7 +108,7 @@ namespace AIMuster.ViewModels
 
 
         [RelayCommand]
-        private async void KeyEnter()
+        private async Task KeyEnter()
         {
             //Debug.WriteLine($"按下了回车，内容是：{CueWord}");
 
@@ -128,7 +123,7 @@ namespace AIMuster.ViewModels
                     var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
                     //通过 webview2 运行js 填充
                     await model.TargetWebView?.ExecuteScriptAsync(runJs);
-
+                    CueWord = "" ;
                     model.TargetWebView?.ExecuteScriptAsync(model.SendElementJs);
                 }
             }

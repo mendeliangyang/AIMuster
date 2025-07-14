@@ -42,17 +42,18 @@ namespace AIMuster.ViewModels
         private void SaveConfig()
         {
             IfChanged = true;
+
+            //切换主题
+            ThemeManager.SwitchTheme(AppConfig.Theme.ToString());
             ConfigManager.Save(AppConfig);
         }
 
         [RelayCommand]
-        private void SaveConfigAndClose()
+        private void CloseWindow()
         {
-            SaveConfig();
-
+            //SaveConfig();
             // 发送一个普通的关闭消息
-            WeakReferenceMessenger.Default.Send(new CloseWindowMessage(), this);
-            WeakReferenceMessenger.Default.Send(SetWindowViewModel.CloseWindowMessage, this);
+            WeakReferenceMessenger.Default.Send(new CloseWindowMessage());
         }
         
     }

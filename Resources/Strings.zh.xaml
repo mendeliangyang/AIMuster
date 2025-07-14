@@ -3,6 +3,7 @@
 
 
 
+    <sys:String x:Key="Close_General">关闭</sys:String>
     <sys:String x:Key="Confirm_General">确认</sys:String>
     <sys:String x:Key="Cancel_General">取消</sys:String>
 
