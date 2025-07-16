@@ -71,6 +71,6 @@ namespace AIMuster.Models
             if (obj is not AiModelConfig other) return false;
             return ModelId == other.ModelId;  // 只比 ID 相等即可
         }
-        public override int GetHashCode() => ModelId.GetHashCode();
+        public override int GetHashCode() => ModelId?.GetHashCode() ?? 0;
     }
 }
