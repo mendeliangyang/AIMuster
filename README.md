@@ -19,10 +19,10 @@ AIMuster is an innovative AI aggregation platform that lets you ask one question
 ### 下载Releases解压直接使用
 ### Download the Releases, unzip and use directly
 
-
+---
 ## 🤝 欢迎贡献 Contributing
 #### 我们欢迎任何形式的贡献：代码、功能建议、模型接入脚本等。
 
-
+---
 ## 📄 许可证 License
 ### 本项目遵循 MIT License。
