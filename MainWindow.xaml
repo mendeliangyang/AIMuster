@@ -74,7 +74,7 @@
                                                AllowsTransparency="True"
                                                StaysOpen="False"
                                                IsOpen="{Binding IsMouseOver}">
-                                            <Border CornerRadius="5" Padding="10"  MinWidth="180"
+                                            <Border CornerRadius="5" Padding="10"  MinWidth="180" Style="{DynamicResource ThemedBorderStyle}"
            >
                                                 <StackPanel>
                                                     <CheckBox Margin="5" Content="{DynamicResource Enable_MainWindow}" IsChecked="{Binding IsEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"></CheckBox>

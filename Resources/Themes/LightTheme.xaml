@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Color x:Key="PrimaryBackgroundColor">#FFFFFFFF</Color>
     <Color x:Key="PrimaryForegroundColor">#FF000000</Color>
+    <Color x:Key="BorderColor">#FFCCCCCC</Color>
 
     <SolidColorBrush x:Key="PrimaryBackgroundBrush" Color="{DynamicResource PrimaryBackgroundColor}" />
     <SolidColorBrush x:Key="PrimaryForegroundBrush" Color="{DynamicResource PrimaryForegroundColor}" />
+    <SolidColorBrush x:Key="SystemBorderBrush" Color="{DynamicResource BorderColor}" />
 </ResourceDictionary>
