@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AIMuster.Config;
@@ -18,6 +19,7 @@ namespace AIMuster.ViewModels
         public SetWindowViewModel(AppConfig config)
         {
             appConfig = config;
+            Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
         }
 
         [ObservableProperty]
@@ -26,6 +28,9 @@ namespace AIMuster.ViewModels
 
         [ObservableProperty]
         private bool ifChanged=false;
+
+        [ObservableProperty]
+        private string version = "";
 
 
         [RelayCommand]

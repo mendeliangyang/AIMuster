@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using AIMuster.Config;
 using AIMuster.Models;
@@ -32,7 +35,12 @@ namespace AIMuster.ViewModels
         /// 模型列表
         /// </summary>
         [ObservableProperty]
-        private ObservableCollection<AiModelConfig> aiModelConfigs = new ObservableCollection<AiModelConfig>();
+        private ObservableCollection<AiModelConfig> aiViewModelConfigs = new ObservableCollection<AiModelConfig>();
+
+
+        [ObservableProperty]
+        private List<AiModelConfig> aiModelConfigs = ConfigManager.LoadAiModelConfig();
+
 
         /// <summary>
         /// 行
@@ -77,10 +85,9 @@ namespace AIMuster.ViewModels
             var appConfig = ConfigManager.LoadAppConfig();
             RowCount = appConfig.RowCount;
             ColumnCount = appConfig.ColumnCount;
-            var configs = ConfigManager.LoadAiModelConfig();
             var viewConfigs = ConfigManager.LoadViewAiModelConfig();
             var cellCount = RowCount * ColumnCount;
-            AiModelConfigs.Clear();
+            AiViewModelConfigs.Clear();
             int cellIndex = -1;
             for (int i = 0; i < RowCount; i++)
             {
@@ -90,35 +97,40 @@ namespace AIMuster.ViewModels
                     var viewModel = viewConfigs.FirstOrDefault(a => a.RowIndex == i && a.ColumnIndex == j);
                     if (viewModel != null) 
                     {
-                        AiModelConfigs.Add(viewModel);
+                        viewModel.RowIndex = i;
+                        viewModel.ColumnIndex = j;
+                        AiViewModelConfigs.Add(viewModel);
                         continue;
                     }
                     if (viewConfigs.Count > cellIndex)
                     {
-                        viewModel = viewConfigs.FirstOrDefault(a => !AiModelConfigs.Any(b => b.ModelId == a.ModelId));
+                        viewModel = viewConfigs.FirstOrDefault(a => !AiViewModelConfigs.Any(b => b.ModelId == a.ModelId));
                         if (viewModel!=null)
                         {
-                            AiModelConfigs.Add(viewModel);
+                            viewModel.RowIndex = i;
+                            viewModel.ColumnIndex = j;
+                            AiViewModelConfigs.Add(viewModel);
                             continue;
                         }
                     }
-                    AiModelConfigs.Add(new AiModelConfig());
+                    AiViewModelConfigs.Add(new AiModelConfig());
                 }
             }
 
+            //保存配置文件
+            ConfigManager.SaveAiModelConfig(AiModelConfigs);
+            ConfigManager.SaveViewAiModelConfig(AiViewModelConfigs.ToList());
         }
 
 
         [RelayCommand]
         private async Task KeyEnter()
         {
-            //Debug.WriteLine($"按下了回车，内容是：{CueWord}");
-
             if (!string.IsNullOrEmpty(CueWord))
             {
-                foreach (var model in AiModelConfigs)
+                foreach (var model in AiViewModelConfigs)
                 {
-                    if (!model.IsEnabled&&model.TargetWebView==null)
+                    if (!model.IsValid|| !model.IsEnabled||model.TargetWebView==null)
                     {
                         continue;
                     }
@@ -143,6 +155,50 @@ namespace AIMuster.ViewModels
             {
                 KeyEnter();
             }
+        }
+
+        [RelayCommand]
+        private void MouseEnter(AiModelConfig aiModelConfig) => aiModelConfig.IsMouseOver = true;
+
+        [RelayCommand]
+        private void MouseLeave(AiModelConfig aiModelConfig) => aiModelConfig.IsMouseOver = false;
+
+        [RelayCommand]
+        private void SelectModel(object param)
+        {
+            dynamic p = param!;
+            var selected = p.SelectedItem as AiModelConfig;
+            var itemData = p.CurrentDataItem as AiModelConfig;
+            var combobox = p.ComboBox as ComboBox;
+            //selected = AiModelConfigs[combobox.SelectedIndex];
+
+            if (selected != null && itemData != null && itemData.TargetWebView != null)
+            {
+                var selectViewModel = AiViewModelConfigs.FirstOrDefault(a=>a.ModelId==selected.ModelId);
+                if (selectViewModel!=null)
+                {
+                    var selectViewModelIndex = AiViewModelConfigs.IndexOf(selectViewModel);
+                    AiViewModelConfigs.Remove(selectViewModel);
+                    AiViewModelConfigs.Insert(selectViewModelIndex,new AiModelConfig());
+                }
+
+                var model = AiViewModelConfigs.FirstOrDefault(a=>a.ModelId==itemData.ModelId);
+                var modelIndex = -1;
+                if (model!=null)
+                {
+                    modelIndex = AiViewModelConfigs.IndexOf(model);
+                    AiViewModelConfigs.Remove(model);
+                }
+                if (modelIndex!=-1)
+                {
+                    selected.RowIndex = model.RowIndex;
+                    selected.ColumnIndex = model.ColumnIndex;
+                    AiViewModelConfigs.Insert(modelIndex, selected);
+                }
+                ConfigManager.SaveViewAiModelConfig(AiViewModelConfigs.ToList());
+            }
+
+
         }
 
         #endregion

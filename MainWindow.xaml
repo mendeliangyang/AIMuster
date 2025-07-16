@@ -27,7 +27,7 @@
                             <i:InvokeCommandAction Command="{Binding SetCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
-                </MenuItem> 
+                </MenuItem>
                 <MenuItem Header="{DynamicResource Exit_MainWindow}" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
@@ -41,7 +41,7 @@
 
         <Grid Grid.Row="1">
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding AiModelConfigs}">
+                <ItemsControl ItemsSource="{Binding AiViewModelConfigs}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="{Binding RowCount}" Columns="{Binding ColumnCount}" />
@@ -53,12 +53,59 @@
 
                             <Border BorderBrush="Gray" BorderThickness="1" Margin="2">
                                 <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
                                     <!-- 默认：显示 WebView2 -->
-                                    <wv2:WebView2 x:Name="WebViewer"  Source="{Binding ModelUrl}"  Margin="2" Visibility="{Binding IsEnabled ,Converter={StaticResource BoolToVisibility}}" Loaded="WebViewer_Loaded"/>
-                                    <!-- 替代：显示下拉框 -->
-                                    <ComboBox x:Name="ModelSelector"   ItemsSource="{Binding AvailableModels}"  SelectedItem="{Binding SelectedModel, Mode=TwoWay}"   Margin="2"  Visibility="{Binding IsEnabled ,Converter={StaticResource BoolToVisibility},ConverterParameter=Invert}" />
+                                    <wv2:WebView2 x:Name="WebViewer"  Grid.Row="1" Source="{Binding ModelUrl}"  Margin="2" Visibility="{Binding IsValid ,Converter={StaticResource BoolToVisibility}}" Loaded="WebViewer_Loaded" IsHitTestVisible="False"/>
+
+                                    <Grid  Panel.ZIndex="1" Grid.Row="0">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseEnter">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.MouseEnterCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="MouseLeave">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.MouseLeaveCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+
+                                        <Popup Placement="MousePoint"
+                                               AllowsTransparency="True"
+                                               StaysOpen="False"
+                                               IsOpen="{Binding IsMouseOver}">
+                                            <Border Background="#CCFFFFFF" CornerRadius="5" Padding="10"  MinWidth="180"
+           >
+                                                <StackPanel>
+                                                    <CheckBox Content="{DynamicResource Enable_MainWindow}" IsChecked="{Binding IsEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"></CheckBox>
+                                                    <ComboBox  x:Name="ModelSelector" ItemsSource="{Binding DataContext.AiModelConfigs, RelativeSource={RelativeSource AncestorType=Window}}" DisplayMemberPath="ModelName"
+SelectedItem="{Binding ., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="SelectionChanged">
+                                                                <i:InvokeCommandAction
+            Command="{Binding DataContext.SelectModelCommand, RelativeSource={RelativeSource AncestorType=Window}}"  >
+                                                                    <i:InvokeCommandAction.CommandParameter >
+                                                                        <MultiBinding Converter="{StaticResource MultiSelectCommandParameter}">
+                                                                            
+                                                                        <Binding Path="SelectedItem" ElementName="ModelSelector" />
+                                                                            <Binding Path=" ." ></Binding>
+
+                                                                            <Binding RelativeSource="{RelativeSource AncestorType=ComboBox}" />
+                                                                        </MultiBinding>
+                                                                    </i:InvokeCommandAction.CommandParameter>
+                                                                </i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </ComboBox>
+                                                </StackPanel>
+                                            </Border>
+                                        </Popup>
+
+
+                                    </Grid>
+
                                 </Grid>
-                               
+
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

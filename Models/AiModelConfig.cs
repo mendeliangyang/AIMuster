@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Web.WebView2.Wpf;
 
@@ -34,7 +35,7 @@ namespace AIMuster.Models
         [ObservableProperty] 
         private bool isEnabled  = false;
         [ObservableProperty] 
-        private bool isDefault  = false;
+        private bool isValid  = true;
         [ObservableProperty] 
         private bool isCustomModel  = false;
 
@@ -43,6 +44,11 @@ namespace AIMuster.Models
 
         [ObservableProperty]
         private int columnIndex =-1;
+
+        [JsonIgnore]
+        [ObservableProperty]
+        private bool isMouseOver =false;
+
 
         /// <summary>
         /// 填充元素的JavaScript代码
@@ -60,5 +66,10 @@ namespace AIMuster.Models
         [JsonIgnore]
         public WebView2 TargetWebView { get; set;}
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is not AiModelConfig other) return false;
+            return ModelId == other.ModelId;  // 只比 ID 相等即可
+        }
     }
 }

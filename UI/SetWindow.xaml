@@ -15,6 +15,7 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -83,6 +84,9 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>-->
+        </StackPanel>
+        <StackPanel Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+            <TextBlock FontSize="10" Text="{Binding Version}"></TextBlock>
         </StackPanel>
     </Grid>
 </Window>

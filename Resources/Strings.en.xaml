@@ -5,11 +5,13 @@
     <sys:String x:Key="Close_General">Close</sys:String>
     <sys:String x:Key="Confirm_General">Confirm</sys:String>
     <sys:String x:Key="Cancel_General">Cancel</sys:String>
+    <sys:String x:Key="Set_General">Setting</sys:String>
 
     <sys:String x:Key="WindowTitle">AIMuster</sys:String>
     <sys:String x:Key="Help_MainWindow">Help</sys:String>
-    <sys:String x:Key="Set_MainWindow">Set</sys:String>
+    <sys:String x:Key="Set_MainWindow">Setting</sys:String>
     <sys:String x:Key="Exit_MainWindow">Exit</sys:String>
+    <sys:String x:Key="Enable_MainWindow">Enable</sys:String>
 
     <sys:String x:Key="Title_SetWindow">Set</sys:String>
     <sys:String x:Key="RowTb_SetWindow">Row</sys:String>

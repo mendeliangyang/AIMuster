@@ -65,6 +65,11 @@ namespace AIMuster
             ThemeManager.SwitchTheme(AppConfig.Theme.ToString());
 
             base.OnStartup(e);
+
+
+            //写入配置
+            var aiModels = ConfigManager.LoadAiModelConfig();
+            ConfigManager.SaveAiModelConfig(aiModels);
         }
 
         protected override async void OnExit(ExitEventArgs e)

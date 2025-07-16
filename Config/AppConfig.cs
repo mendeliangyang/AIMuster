@@ -33,7 +33,7 @@ namespace AIMuster.Config
 
         private static readonly string ConfigFilePath = "config.json";
         private static readonly string AiModelConfigFilePath = "AiModelConfig.json";
-        private static readonly string ViewAiModelConfigFilePath = "ViewAiModelConfig.json";
+        private static readonly string ViewAiModelConfigFilePath = "AiViewModelConfig.json";
 
 
         private static List<AiModelConfig> aiModelConfigs = new List<AiModelConfig>()
@@ -48,7 +48,7 @@ namespace AIMuster.Config
                 ModelUrl = "https://chat.deepseek.com",
                 ModelIconUrl = "https://example.com/icon.png",
                 IsEnabled = true,
-                IsDefault = true,
+                IsValid = true,
                 IsCustomModel = false,
                 ObtainElementJs = $@"(() => {{
                         try {{
@@ -106,7 +106,7 @@ namespace AIMuster.Config
                 ModelUrl = "https://chatgpt.com",
                 ModelIconUrl = "https://example.com/icon.png",
                 IsEnabled = true,
-                IsDefault = true,
+                IsValid = true,
                 IsCustomModel = false,
                 ObtainElementJs = $@"
                     (async () => {{
@@ -145,7 +145,7 @@ namespace AIMuster.Config
                 ModelUrl = "https://gemini.google.com/app",
                 ModelIconUrl = "https://example.com/icon.png",
                 IsEnabled = true,
-                IsDefault = true,
+                IsValid = true,
                 IsCustomModel = false,
                 ObtainElementJs = @"
                                 (function() {
@@ -192,7 +192,7 @@ namespace AIMuster.Config
                 ModelUrl = "https://www.tongyi.com/",
                 ModelIconUrl = "https://example.com/icon.png",
                 IsEnabled = true,
-                IsDefault = true,
+                IsValid = true,
                 IsCustomModel = false,
                 ObtainElementJs = "(()=>{\r\n    var element = document.querySelector('textarea[placeholder=\"遇事不决问通义\"]');\r\nif(!element)\r\n{\r\n    document.querySelector('textarea.ant-input.textarea--FEdqShqI');\r\n}\r\n     if(element){ const nativeSetter = Object.getOwnPropertyDescriptor(\r\n      element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype\r\n                                : HTMLInputElement.prototype,\r\n      'value').set;\r\n  nativeSetter.call(element, '$prompt');\r\n\r\n  element.dispatchEvent(new Event('input',  { bubbles:true }));\r\n  element.dispatchEvent(new Event('change', { bubbles:true }));}\r\n})()"
                 ,
@@ -259,7 +259,7 @@ namespace AIMuster.Config
                 var json = File.ReadAllText(ViewAiModelConfigFilePath);
                 viewAiModelConfigs = JsonSerializer.Deserialize<List<AiModelConfig>>(json);
             }
-            if (viewAiModelConfigs==null)
+            if (viewAiModelConfigs==null||!viewAiModelConfigs.Any())
             {
                 viewAiModelConfigs = aiModelConfigs;
             }

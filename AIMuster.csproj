@@ -6,6 +6,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+
+	  <!-- 显示用版本 -->
+	  <Version>1.0.1</Version>
+	  <!-- 编译时使用 -->
+	  <AssemblyVersion>1.0.1.0</AssemblyVersion>
+	  <!-- 文件属性中的版本 -->
+	  <FileVersion>1.0.1.0</FileVersion>
+
   </PropertyGroup>
 
   <ItemGroup>
