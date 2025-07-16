@@ -74,11 +74,11 @@
                                                AllowsTransparency="True"
                                                StaysOpen="False"
                                                IsOpen="{Binding IsMouseOver}">
-                                            <Border Background="#CCFFFFFF" CornerRadius="5" Padding="10"  MinWidth="180"
+                                            <Border CornerRadius="5" Padding="10"  MinWidth="180"
            >
                                                 <StackPanel>
-                                                    <CheckBox Content="{DynamicResource Enable_MainWindow}" IsChecked="{Binding IsEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"></CheckBox>
-                                                    <ComboBox  x:Name="ModelSelector" ItemsSource="{Binding DataContext.AiModelConfigs, RelativeSource={RelativeSource AncestorType=Window}}" DisplayMemberPath="ModelName"
+                                                    <CheckBox Margin="5" Content="{DynamicResource Enable_MainWindow}" IsChecked="{Binding IsEnabled,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"></CheckBox>
+                                                    <ComboBox Margin="5" x:Name="ModelSelector" ItemsSource="{Binding DataContext.AiModelConfigs, RelativeSource={RelativeSource AncestorType=Window}}" DisplayMemberPath="ModelName"
 SelectedItem="{Binding ., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                         <i:Interaction.Triggers>
                                                             <i:EventTrigger EventName="SelectionChanged">
