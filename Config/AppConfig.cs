@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using AIMuster.Models;
 using static System.Net.Mime.MediaTypeNames;
@@ -182,6 +185,52 @@ namespace AIMuster.Config
                                     return '已触发点击';
                                 })();"
             },
+
+            new AiModelConfig
+            {
+                ModelName = "Grok ",
+                ModelId = "Grok",
+                ModelType = "Grok",
+                ModelVersion = "v1",
+                ModelDescription = "Grok",
+                ModelUrl = "https://grok.com/",
+                ModelIconUrl = "https://example.com/icon.png",
+                IsEnabled = true,
+                IsValid = true,
+                IsCustomModel = false,
+                ObtainElementJs = @"
+    (function() {
+        const textarea = document.querySelector('textarea[aria-label=""Ask Grok anything""]');
+        if (textarea) {
+            const nativeTextAreaValueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;
+        nativeTextAreaValueSetter.call(textarea, '$prompt');
+
+            const event = new Event('input', { bubbles: true });
+            textarea.dispatchEvent(event);
+
+            return 'value set and event dispatched';
+        } else {
+            return 'textarea not found';
+        }
+    })();"
+                ,
+                SendElementJs=@"
+    (function() {
+        const button = document.querySelector('button[aria-label=""Submit""]');
+        if (button && !button.disabled) {
+            const event = new MouseEvent('click', {
+        bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            button.dispatchEvent(event);
+            return 'clicked';
+        } else {
+            return 'not-found-or-disabled';
+        }
+    })();
+"
+            },
             new AiModelConfig
             {
                 ModelName = "通义",
@@ -194,7 +243,7 @@ namespace AIMuster.Config
                 IsEnabled = true,
                 IsValid = true,
                 IsCustomModel = false,
-                ObtainElementJs = "(()=>{\r\n    var element = document.querySelector('textarea[placeholder=\"遇事不决问通义\"]');\r\nif(!element)\r\n{\r\n    document.querySelector('textarea.ant-input.textarea--FEdqShqI');\r\n}\r\n     if(element){ const nativeSetter = Object.getOwnPropertyDescriptor(\r\n      element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype\r\n                                : HTMLInputElement.prototype,\r\n      'value').set;\r\n  nativeSetter.call(element, '$prompt');\r\n\r\n  element.dispatchEvent(new Event('input',  { bubbles:true }));\r\n  element.dispatchEvent(new Event('change', { bubbles:true }));}\r\n})()"
+                ObtainElementJs = @"(()=>{    var element = document.querySelector('textarea[placeholder=""遇事不决问通义""]'); if(!element){    document.querySelector('textarea.ant-input.textarea--FEdqShqI');}     if(element){ const nativeSetter = Object.getOwnPropertyDescriptor(      element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype                               : HTMLInputElement.prototype,      'value').set;  nativeSetter.call(element, '$prompt'); element.dispatchEvent(new Event('input',  { bubbles:true }));  element.dispatchEvent(new Event('change', { bubbles:true }));}})()"
                 ,
                 SendElementJs=@"
                                 (function() {

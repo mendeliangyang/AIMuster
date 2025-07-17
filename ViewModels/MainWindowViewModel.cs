@@ -201,6 +201,20 @@ namespace AIMuster.ViewModels
 
         }
 
-        #endregion
-    }
+        [RelayCommand]
+        private void RefreshWeb(AiModelConfig aiModel)
+        {
+            if (aiModel?.TargetWebView != null)
+            {
+                aiModel.TargetWebView.Reload();
+            }
+            else
+            {
+                _messageService.ShowMessage("WebView未初始化或不存在");
+            }
+        }
+
+
+            #endregion
+        }
 }

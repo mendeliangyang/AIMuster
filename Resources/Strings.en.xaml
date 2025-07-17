@@ -12,6 +12,7 @@
     <sys:String x:Key="Set_MainWindow">Setting</sys:String>
     <sys:String x:Key="Exit_MainWindow">Exit</sys:String>
     <sys:String x:Key="Enable_MainWindow">Enable</sys:String>
+    <sys:String x:Key="RefreshWeb_MainWindow">Refresh</sys:String>
 
     <sys:String x:Key="Title_SetWindow">Set</sys:String>
     <sys:String x:Key="RowTb_SetWindow">Row</sys:String>
