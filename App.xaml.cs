@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using AIMuster.Config;
 using AIMuster.Utils;
@@ -16,6 +17,7 @@ namespace AIMuster
     public partial class App : Application
     {
 
+        private static Mutex _mutex;
         public static IHost AppHost { get; private set; }
         public static AppConfig AppConfig { get; private set; }
 
@@ -53,6 +55,20 @@ namespace AIMuster
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+
+            const string mutexName = "AIMuster";
+
+            bool isNewInstance;
+            _mutex = new Mutex(true, mutexName, out isNewInstance);
+
+            if (!isNewInstance)
+            {
+                // 已有实例在运行
+                MessageBox.Show("程序已在运行中。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                Shutdown();
+                return;
+            }
+
             await AppHost.StartAsync();
 
             var mainWindow = new MainWindow

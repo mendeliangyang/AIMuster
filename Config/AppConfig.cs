@@ -24,10 +24,21 @@ namespace AIMuster.Config
     {
         public string Language { get; set; } = "zh";
         public Theme Theme { get; set; } = Theme.Light;
-        public int WindowWidth { get; set; } = 800;
-        public int WindowHeight { get; set; } = 600;
         public int RowCount { get; set; } = 1;
         public int ColumnCount { get; set; } = 1;
+
+        public Dictionary<string,string> SpecialWord = new Dictionary<string, string>() 
+        {
+            {"\\","\\\\" },
+            {"'","\\'" },
+            {"\"","\\\"" },
+            {"\n","\\n'" },
+            {"\r","\\r" },
+            {"\t","\\t" },
+            {"\b","\\b" },
+            {"\f","\\f" }
+
+        };
     }
 
     public static class ConfigManager

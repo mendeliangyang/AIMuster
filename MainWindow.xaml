@@ -40,8 +40,8 @@
 
 
         <Grid Grid.Row="1">
-            <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding AiViewModelConfigs}">
+            <ScrollViewer Visibility="{Binding IfAmplifyWeb,Converter={StaticResource BoolToVisibility},ConverterParameter=invert}">
+                <ItemsControl ItemsSource="{Binding AiViewModelConfigs}" >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <UniformGrid Rows="{Binding RowCount}" Columns="{Binding ColumnCount}" />
@@ -60,7 +60,7 @@
                                     <!-- 默认：显示 WebView2 -->
                                     <wv2:WebView2 x:Name="WebViewer"  Grid.Row="1" Source="{Binding ModelUrl}"  Margin="2" Visibility="{Binding IsValid ,Converter={StaticResource BoolToVisibility}}" Loaded="WebViewer_Loaded" IsHitTestVisible="False"/>
 
-                                    <Grid  Panel.ZIndex="1" Grid.Row="0">
+                                    <Grid  Panel.ZIndex="1" Grid.Row="0" Margin="50,0,50,0">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="MouseEnter">
                                                 <i:InvokeCommandAction Command="{Binding DataContext.MouseEnterCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" CommandParameter="{Binding}" />
@@ -77,6 +77,13 @@
                                             <Border CornerRadius="5" Padding="10"  MinWidth="180" Style="{DynamicResource ThemedBorderStyle}"
            >
                                                 <StackPanel>
+                                                    <Button Content="{DynamicResource AmplifyWeb_MainWindow}">
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="Click">
+                                                                <i:InvokeCommandAction Command="{Binding DataContext.AmplifyWebCommand,RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding .}"></i:InvokeCommandAction>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                    </Button>
                                                     <Button Content="{DynamicResource RefreshWeb_MainWindow}" >
                                                         <i:Interaction.Triggers>
                                                             <i:EventTrigger EventName="Click">
@@ -118,6 +125,22 @@ SelectedItem="{Binding ., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
+            <Grid Visibility="{Binding IfAmplifyWeb,Converter={StaticResource BoolToVisibility}}" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" >
+                    <Button HorizontalAlignment="Right" Content="{DynamicResource CancelAmplifyWeb_MainWindow}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding CloseAmplifyWebCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </StackPanel>
+                <wv2:WebView2 Grid.Row="1"  Grid.RowSpan="2" Visibility="{Binding IfAmplifyWeb,Converter={StaticResource BoolToVisibility}}"  Source="{Binding AmplifyWebModel.ModelUrl}" ></wv2:WebView2>
+            </Grid>
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

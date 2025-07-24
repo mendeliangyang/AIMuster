@@ -11,6 +11,7 @@ using AIMuster.UI;
 using AIMuster.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AIMuster.ViewModels
 {
@@ -19,12 +20,15 @@ namespace AIMuster.ViewModels
         IMessageService _messageService;
         IAppService _appService;
 
+        AppConfig _config;
+
         public IRelayCommand<KeyEventArgs> EnterCommand { get; }
 
-        public MainWindowViewModel( IMessageService messageService,IAppService appService) 
+        public MainWindowViewModel( IMessageService messageService,IAppService appService, AppConfig appConfig) 
         {
             _appService = appService;
             _messageService = messageService;
+            _config = appConfig;
 
             EnterCommand = new RelayCommand<KeyEventArgs>(OnEnter);
         }
@@ -56,6 +60,12 @@ namespace AIMuster.ViewModels
 
         [ObservableProperty]
         private string cueWord = "AIMuster - ";
+
+        [ObservableProperty]
+        private bool ifAmplifyWeb = false;
+
+        [ObservableProperty]
+        private AiModelConfig amplifyWebModel =null;
 
         #endregion
         #region Command
@@ -128,16 +138,17 @@ namespace AIMuster.ViewModels
         {
             if (!string.IsNullOrEmpty(CueWord))
             {
+                string sendWord = AiUtil.EscapeJsString(CueWord, _config.SpecialWord);
                 foreach (var model in AiViewModelConfigs)
                 {
                     if (!model.IsValid|| !model.IsEnabled||model.TargetWebView==null)
                     {
                         continue;
                     }
-                    var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, CueWord);
+                    var runJs = model.ObtainElementJs.Replace(ConfigManager.PromptCodeWeb, sendWord);
                     //通过 webview2 运行js 填充
-                    await model.TargetWebView?.ExecuteScriptAsync(runJs);
-                    model.TargetWebView?.ExecuteScriptAsync(model.SendElementJs);
+                    await model.TargetWebView.ExecuteScriptAsync(runJs);
+                    model.TargetWebView.ExecuteScriptAsync(model.SendElementJs);
                 }
                 CueWord = "";
             }
@@ -214,7 +225,20 @@ namespace AIMuster.ViewModels
             }
         }
 
-
-            #endregion
+        [RelayCommand]
+        private void AmplifyWeb(AiModelConfig aiModel)
+        {
+            IfAmplifyWeb = true;
+            AmplifyWebModel = aiModel;
         }
+
+        [RelayCommand]
+        private void CloseAmplifyWeb()
+        {
+            IfAmplifyWeb = false;
+            //AmplifyWebModel = aiModel;
+        }
+
+        #endregion
+    }
 }
