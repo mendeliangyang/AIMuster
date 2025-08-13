@@ -147,7 +147,8 @@ SelectedItem="{Binding ., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="0"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBox Margin="10" Grid.Column="0"  Text="{Binding CueWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <TextBox TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"   AcceptsReturn="True"
+  Margin="10"  Grid.Column="0"  Text="{Binding CueWord,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.InputBindings>
                     <KeyBinding  Key="Enter" Command="{Binding KeyEnterCommand}" />
                 </TextBox.InputBindings>
